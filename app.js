@@ -8,7 +8,7 @@ function tituloDelJuego(){
     asignarTextoAElemento('P','Guess the number between 1 and 10');
 }
 
-
+tituloDelJuego();
 let numeroSorteado = [];
 let numeroMaximo = 10;
 let NumeroRandom = generarNumeroRandom();
