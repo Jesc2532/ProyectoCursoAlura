@@ -1,22 +1,64 @@
-let titulo = document.querySelector("H1");
-titulo.textContent("Hora del desafío!");
-
-function mensajeConsola(){
-    console.log("El botón fue clicado");
+function asignarTextoAElemento(elemento, texto){
+    let elementoHTML = document.querySelector(elemento);
+    elementoHTML.innerHTML = texto;
 }
 
-function mensajePrompt(){
-    let ciudad = prompt("Escribe una ciudad de brazil por favor");
-    alert("Estuve en " + ciudad + ", Y me acordé de tí");
+function tituloDelJuego(){
+    asignarTextoAElemento('h1', 'Secret Number Game!');
+    asignarTextoAElemento('P','Guess the number between 1 and 10');
 }
 
-function mensajeAlert(){
-    alert("Yo amo JS");
+
+let numeroSorteado = [];
+let numeroMaximo = 10;
+let NumeroRandom = generarNumeroRandom();
+let Intentos = 1;
+
+
+function limpiarCampo(){
+    let input = document.querySelector('input');
+    input.value = '';
 }
 
-function mensajeSuma(){
-    let A = prompt("Por favor indicame un numero para sumar: ");
-    let B = prompt("Indicame ahora otro número por favor: ");
-    let Res = Number(A) + Number(B);
-    alert("Bien, la suma de " + A + " + " + B + " Es: " + Res);
+
+function generarNumeroRandom(){
+
+    if (numeroSorteado.length == numeroMaximo){
+        asignarTextoAElemento('p', 'Ya no hay mas numeros para adivinar');
+    }
+    else{
+    let NumeroGenerado = Math.floor(Math.random() * numeroMaximo) + 1;
+    if(numeroSorteado.includes(NumeroGenerado)){
+        return generarNumeroRandom();
+    }
+    numeroSorteado.push(NumeroGenerado);
+    return NumeroGenerado;
+    }
+}
+
+function buttonClick() {
+    let input = document.querySelector('input');
+    
+    if (input.value < NumeroRandom){
+        asignarTextoAElemento('p', 'El numero es menor al numero secreto');
+        limpiarCampo();
+        Intentos++;
+    }
+    else if(input.value > NumeroRandom){
+        asignarTextoAElemento('p', 'El numero es mayor al numero secreto');
+        limpiarCampo();
+        Intentos++;
+    }
+    else{
+        asignarTextoAElemento('p', `Adivinaste el numero secreto en ${Intentos} ${Intentos > 1 ? " intentos" : " intento"}`);
+        document.getElementById("reiniciar").disabled = false;
+    }
+}
+
+function reiniciarJuego(){
+    tituloDelJuego();
+    document.getElementById("reiniciar").disabled = true;
+    NumeroRandom = generarNumeroRandom();
+    limpiarCampo();
+    Intentos = 1;
 }
